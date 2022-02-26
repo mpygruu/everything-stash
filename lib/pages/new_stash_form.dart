@@ -4,13 +4,13 @@ class NewStashFormPage extends StatelessWidget {
   const NewStashFormPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext buildContext) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.home_filled),
           onPressed: () {
-            Navigator.pop(buildContext);
+            Navigator.pop(context);
           },
         ),
         title: const Text('New stash'),
@@ -30,6 +30,7 @@ class NewStashForm extends StatefulWidget {
 class _NewStashFormState extends State<NewStashForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  @override
   Widget build(BuildContext buildContext) {
     return Form(
       key: _formKey,
