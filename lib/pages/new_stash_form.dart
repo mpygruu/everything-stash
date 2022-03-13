@@ -1,4 +1,7 @@
+import 'package:everything_stash/database_helper.dart';
 import 'package:flutter/material.dart';
+
+import '../models/stash.dart';
 
 class NewStashFormPage extends StatelessWidget {
   const NewStashFormPage({Key? key}) : super(key: key);
@@ -32,6 +35,9 @@ class _NewStashFormState extends State<NewStashForm> {
 
   @override
   Widget build(BuildContext buildContext) {
+    TextEditingController? titleController;
+    TextEditingController? descriptionController;
+
     return Form(
       key: _formKey,
       child: Padding(
@@ -39,8 +45,27 @@ class _NewStashFormState extends State<NewStashForm> {
         child: Column(
           children: <Widget>[
             TextFormField(
-              decoration: const InputDecoration(hintText: 'Name'),
+              decoration: const InputDecoration(hintText: 'Title'),
+              controller: titleController,
             ),
+            TextFormField(
+              decoration: const InputDecoration(hintText: 'Description'),
+              controller: descriptionController,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(45.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  DatabaseHelper.instance.addStash(
+                    Stash(
+                        title: titleController!.text,
+                        description: descriptionController!.text),
+                  );
+                  Navigator.pop(context);
+                },
+                child: const Text('Add new stash'),
+              ),
+            )
           ],
         ),
       ),
