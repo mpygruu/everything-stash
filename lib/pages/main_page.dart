@@ -1,8 +1,7 @@
-import 'package:everything_stash/database_helper.dart';
+import 'package:everything_stash/models/db_model.dart';
 import 'package:everything_stash/pages/new_stash_form.dart';
+import 'package:everything_stash/widgets/stash_card.dart';
 import 'package:flutter/material.dart';
-
-import '../models/stash.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -12,6 +11,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  var db = DatabaseConnector();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,28 +24,21 @@ class _MainPageState extends State<MainPage> {
         title: const Text('Your stashes'),
       ),
       body: Center(
-        child: FutureBuilder<List<Stash>>(
-          future: DatabaseHelper.instance.getStashes(),
-          builder: (BuildContext context, AsyncSnapshot<List<Stash>> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: Text("Loading..."));
-            }
-            return snapshot.data!.isEmpty
-                ? const Center(
-                    child: Text(
-                      "You have no stashes.\nAdd a new stash with (+) below",
-                      textAlign: TextAlign.center,
+        child: FutureBuilder(
+          future: db.getStashes(),
+          initialData: const [],
+          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+            var data = snapshot.data; //this is the list of stashes
+            var datalength = data!.length;
+
+            return datalength == 0
+                ? const Center(child: Text('You have no stashes'))
+                : ListView.builder(
+                    itemCount: datalength,
+                    itemBuilder: (context, i) => StashCard(
+                      title: data[i].title,
+                      description: data[i].description,
                     ),
-                  )
-                : ListView(
-                    children: snapshot.data!.map((stash) {
-                      return Center(
-                        child: StashCard(
-                          title: stash.title,
-                          description: stash.description,
-                        ),
-                      );
-                    }).toList(),
                   );
           },
         ),
@@ -76,31 +70,6 @@ class _MainPageState extends State<MainPage> {
         },
         tooltip: 'Add a new stash',
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class StashCard extends StatelessWidget {
-  final String? title;
-  final String? description;
-
-  const StashCard({this.title, this.description, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.storage_rounded, size: 38),
-        title: Text(title.toString()),
-        subtitle: Text(description.toString()),
-        trailing: IconButton(
-          icon: const Icon(Icons.more_vert),
-          onPressed: () {},
-        ),
-        onTap: () {},
-        //onLongPress will execute the same function as trailing
-        onLongPress: () {},
       ),
     );
   }
