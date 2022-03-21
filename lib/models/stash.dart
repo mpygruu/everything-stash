@@ -20,7 +20,7 @@ class Stash {
     return {
       'id': id,
       'title': title,
-      'descripton': description,
+      'description': description,
     };
   }
 }
