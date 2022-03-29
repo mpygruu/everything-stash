@@ -37,12 +37,12 @@ class DatabaseConnector {
     );
   }
 
-  Future<void> deleteStash(Stash stash) async {
+  Future<void> deleteStash(Stash? stash) async {
     final db = await database;
     await db.delete(
       'stashes', //table name
       where: 'id == ?', //condition checking for id in stash list
-      whereArgs: [stash.id],
+      whereArgs: [stash!.id],
     );
   }
 
