@@ -35,29 +35,10 @@ class _MainPageState extends State<MainPage> {
                 ? const Center(child: Text('You have no stashes'))
                 : ListView.builder(
                     itemCount: datalength,
-                    itemBuilder: (context, i) => StashCard(
-                      title: data[i].title,
-                      description: data[i].description,
-                    ),
+                    itemBuilder: (context, i) => StashCard(data[i]),
                   );
           },
         ),
-        /*
-        child: ListView(
-          children: const <Widget>[            
-            StashCard(
-                name: 'Stash 1',
-                comment: 'comments are there for short description'),
-            StashCard(
-                name: 'Stash 2',
-                comment: 'comments are there for short description'),
-            StashCard(
-                name: 'Stash 3',
-                comment: 'comments are there for short description'),
-          
-          ],
-        ),
-        */
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
