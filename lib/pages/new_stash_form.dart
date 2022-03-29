@@ -2,6 +2,7 @@ import 'package:everything_stash/models/db_model.dart';
 import 'package:flutter/material.dart';
 
 import '../models/stash.dart';
+import 'main_page.dart';
 
 class NewStashFormPage extends StatelessWidget {
   const NewStashFormPage({Key? key}) : super(key: key);
@@ -61,7 +62,10 @@ class _NewStashFormState extends State<NewStashForm> {
                         title: titleController.text,
                         description: descriptionController.text),
                   );
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => const MainPage()));
                 },
                 child: const Text('Add new stash'),
               ),
