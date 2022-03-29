@@ -1,5 +1,5 @@
 import 'package:everything_stash/models/db_model.dart';
-import 'package:everything_stash/pages/new_stash_form.dart';
+import 'package:everything_stash/pages/new_stash_form_page.dart';
 import 'package:everything_stash/widgets/stash_card.dart';
 import 'package:flutter/material.dart';
 
