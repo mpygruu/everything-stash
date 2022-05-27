@@ -63,8 +63,10 @@ class _NewStashFormState extends State<NewStashForm> {
                         description: descriptionController.text),
                   );
                   //Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainPage()));
                 },
                 child: const Text('Add new stash'),
               ),
