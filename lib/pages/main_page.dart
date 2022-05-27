@@ -11,6 +11,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  void refreshPage() {
+    setState(() {});
+  }
+
   var db = DatabaseConnector();
 
   @override
@@ -38,26 +42,11 @@ class _MainPageState extends State<MainPage> {
                     itemBuilder: (context, i) => StashCard(
                       title: data[i].title,
                       description: data[i].description,
+                      refreshPage: refreshPage,
                     ),
                   );
           },
         ),
-        /*
-        child: ListView(
-          children: const <Widget>[            
-            StashCard(
-                name: 'Stash 1',
-                comment: 'comments are there for short description'),
-            StashCard(
-                name: 'Stash 2',
-                comment: 'comments are there for short description'),
-            StashCard(
-                name: 'Stash 3',
-                comment: 'comments are there for short description'),
-          
-          ],
-        ),
-        */
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

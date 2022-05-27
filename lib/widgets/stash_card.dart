@@ -1,14 +1,24 @@
 import 'package:everything_stash/models/db_model.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+
+import '../models/stash.dart';
 
 class StashCard extends StatelessWidget {
   final String? title;
   final String? description;
+  final VoidCallback? refreshPage;
 
-  const StashCard({this.title, this.description, Key? key}) : super(key: key);
+  const StashCard({this.title, this.description, this.refreshPage, Key? key})
+      : super(key: key);
 
-  void deleteStash() {}
+  void deleteStash(title) {
+    var db = DatabaseConnector();
+    db.findStash(title).then((Stash stash) {
+      db.deleteStash(stash).then((value) {
+        refreshPage!.call();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,7 @@ class StashCard extends StatelessWidget {
         trailing: PopupMenuButton(
           onSelected: (result) {
             if (result == 0) {
-              //DatabaseConnector.database;
+              deleteStash(title);
             }
           },
           icon: const Icon(Icons.more_vert),
