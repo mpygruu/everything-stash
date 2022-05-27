@@ -46,6 +46,17 @@ class DatabaseConnector {
     );
   }
 
+  Future<Stash> findStash(var title) async {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.query(
+      'stashes',
+      where: 'title == ?',
+      whereArgs: [title],
+    );
+
+    return Stash.fromMap(result[0]);
+  }
+
   Future<List<Stash>> getStashes() async {
     final db = await database;
 
