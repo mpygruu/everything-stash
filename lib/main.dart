@@ -17,16 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         fontFamily: 'Cairo',
       ),
-      home: const MyHomePage(),
+      home: const MainPage(),
     );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MainPage();
   }
 }
