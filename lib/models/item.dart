@@ -1,22 +1,37 @@
 class Item {
   int? id;
   String? name;
-  String? description;
-  //Image? image;
+  String? shortDescription;
+  String? longDescription;
+  int? quantity;
+  int? stashId;
 
-  Item({this.id, this.name, this.description});
+  Item({
+    this.id,
+    this.name,
+    this.shortDescription,
+    this.longDescription,
+    this.quantity,
+    this.stashId,
+  });
 
   factory Item.fromMap(Map<String, dynamic> json) => Item(
         id: json['id'],
         name: json['name'],
-        description: json['description'],
+        shortDescription: json['shortDescription'],
+        longDescription: json['longDescription'],
+        quantity: json['quantity'],
+        stashId: json['stashId'],
       );
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'description': description,
+      'shortDescription': shortDescription,
+      'longDescription': longDescription,
+      'quantity': quantity,
+      'stashId': stashId,
     };
   }
 }

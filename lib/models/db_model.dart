@@ -3,13 +3,15 @@ import 'package:path/path.dart';
 import 'package:everything_stash/models/stash.dart';
 import 'dart:async';
 
+import 'item.dart';
+
 class DatabaseConnector {
   Database? _database;
 
   //Getter to access private database correctly
   Future<Database> get database async {
     final dbpath = await getDatabasesPath();
-    const dbname = 'stashes.db';
+    const dbname = 'EverythingStashDb.db';
     final path = join(dbpath, dbname);
 
     _database = await openDatabase(path, version: 1, onCreate: _createDB);
@@ -23,13 +25,23 @@ class DatabaseConnector {
       CREATE TABLE Stashes(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        description TEXT)
+        description TEXT);
     ''');
+    await db.execute("""
+        CREATE TABLE Items(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        shortDescription TEXT,
+        longDescription TEXT,
+        quantity INTEGER, 
+        stashId INTEGER);
+        """);
   }
 
   Future<void> insertStash(Stash stash) async {
     //connecting to database
     final db = await database;
+
     await db.insert(
       'stashes',
       stash.toMap(),
@@ -74,6 +86,61 @@ class DatabaseConnector {
         title: items[index]['title'],
         description: items[index]['description'],
       ),
+    );
+  }
+
+  Future<void> insertItem(Item item) async {
+    //connecting to database
+    final db = await database;
+
+    await db.insert(
+      'items',
+      item.toMap(),
+      //conflictAlgorithm: ConflictAlgorithm.replace, //replacing duplicate entry
+    );
+  }
+
+  Future<void> deleteItem(Item item) async {
+    final db = await database;
+    await db.delete(
+      'items', //table name
+      where: 'id == ?', //condition checking for id in stash list
+      whereArgs: [item.id],
+    );
+  }
+
+  Future<Item> findItem(var name) async {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.query(
+      'items',
+      where: 'name == ?',
+      whereArgs: [name],
+    );
+
+    return Item.fromMap(result[0]);
+  }
+
+  Future<List<Item>> getItems(int? stashId) async {
+    final db = await database;
+
+    //query the database and save result as a list of item maps
+    List<Map<String, dynamic>> items = await db.query(
+      'items',
+      orderBy: 'id DESC',
+      where: 'stashId == ?',
+      whereArgs: [stashId],
+    );
+
+    //converting maps to Stash objects and returing list of them
+    return List.generate(
+      items.length,
+      (index) => Item(
+          id: items[index]['id'],
+          name: items[index]['name'],
+          shortDescription: items[index]['shortDescription'],
+          longDescription: items[index]['longDescription'],
+          quantity: items[index]['quantity'],
+          stashId: items[index]['stashId']),
     );
   }
 }

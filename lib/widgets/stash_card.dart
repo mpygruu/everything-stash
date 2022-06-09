@@ -1,4 +1,5 @@
 import 'package:everything_stash/models/db_model.dart';
+import 'package:everything_stash/pages/item_list_page.dart';
 import 'package:flutter/material.dart';
 
 import '../models/stash.dart';
@@ -41,7 +42,21 @@ class StashCard extends StatelessWidget {
             ),
           ],
         ),
-        onTap: () {},
+        onTap: () {
+          var db = DatabaseConnector();
+          Stash? stash;
+          db.findStash(title).then((Stash s) {
+            stash = s;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (buildContext) => ItemListPage(
+                  stash: stash,
+                ),
+              ),
+            );
+          });
+        },
       ),
     );
   }
