@@ -46,7 +46,7 @@ class _NewItemFormState extends State<NewItemForm> {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: const EdgeInsets.all(35),
+        padding: const EdgeInsets.only(left: 35, right: 35),
         child: Column(
           children: <Widget>[
             TextFormField(
@@ -66,7 +66,7 @@ class _NewItemFormState extends State<NewItemForm> {
               controller: quantityController,
             ),
             Padding(
-              padding: const EdgeInsets.all(45.0),
+              padding: const EdgeInsets.all(25.0),
               child: ElevatedButton(
                 onPressed: () {
                   var db = DatabaseConnector();
