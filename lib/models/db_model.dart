@@ -120,6 +120,12 @@ class DatabaseConnector {
     return Item.fromMap(result[0]);
   }
 
+  Future<void> changeQuantity(var name, int? q) async {
+    final db = await database;
+    await db.execute(
+        'update items set quantity = quantity + ? where name == ?', [q, name]);
+  }
+
   Future<List<Item>> getItems(int? stashId) async {
     final db = await database;
 
