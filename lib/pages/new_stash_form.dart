@@ -56,8 +56,12 @@ class _NewStashFormState extends State<NewStashForm> {
   @override
   Widget build(BuildContext buildContext) {
     setState(() {
-      titleController.text = widget.oldTitle.toString();
-      descriptionController.text = widget.oldDescription.toString();
+      if (widget.oldTitle != null) {
+        titleController.text = widget.oldTitle.toString();
+      }
+      if (widget.oldDescription != null) {
+        descriptionController.text = widget.oldDescription.toString();
+      }
     });
     return Form(
       key: _formKey,
@@ -78,23 +82,45 @@ class _NewStashFormState extends State<NewStashForm> {
               child: ElevatedButton(
                 onPressed: () {
                   var db = DatabaseConnector();
-                  if (widget.updateExisting!) {
-                    db.changeStashDescription(
-                        widget.oldTitle, descriptionController.text);
-                    db.changeStashTitle(widget.oldTitle, titleController.text);
-                  } else {
-                    db.insertStash(
-                      Stash(
-                          title: titleController.text,
-                          description: descriptionController.text),
-                    );
-                  }
 
-                  //Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainPage()));
+                  db.stashExists(titleController.text).then((value) {
+                    if (value == true) {
+                      AlertDialog alertDialog = AlertDialog(
+                        title: const Text('Invalid stash title'),
+                        content:
+                            const Text('Stash with this title already exists.'),
+                        actions: [
+                          ElevatedButton(
+                            child: const Text("OK"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => alertDialog);
+                    } else {
+                      if (widget.updateExisting == true) {
+                        db.changeStashDescription(
+                            widget.oldTitle, descriptionController.text);
+                        db.changeStashTitle(
+                            widget.oldTitle, titleController.text);
+                      } else {
+                        db.insertStash(
+                          Stash(
+                              title: titleController.text,
+                              description: descriptionController.text),
+                        );
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainPage()));
+                    }
+                    //Navigator.pop(context);
+                  });
                 },
                 child: widget.updateExisting == true
                     ? const Text('Update stash')
