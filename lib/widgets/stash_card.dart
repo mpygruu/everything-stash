@@ -65,7 +65,7 @@ class StashCard extends StatelessWidget {
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(
-              child: Text("Update title/description"),
+              child: Text("Update data"),
               value: 0,
             ),
             const PopupMenuItem(
