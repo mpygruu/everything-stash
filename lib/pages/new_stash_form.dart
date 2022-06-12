@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import '../models/stash.dart';
 
 class NewStashFormPage extends StatelessWidget {
-  const NewStashFormPage({Key? key}) : super(key: key);
+  final bool? updateExisting;
+  final String? oldTitle;
+  final String? oldDescription;
+  const NewStashFormPage(
+      {this.updateExisting, this.oldTitle, this.oldDescription, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +22,26 @@ class NewStashFormPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Text('New stash'),
+        title: updateExisting == true
+            ? Text('Update stash $oldTitle')
+            : const Text("New stash"),
       ),
-      body: const NewStashForm(),
+      body: NewStashForm(
+        updateExisting: updateExisting,
+        oldTitle: oldTitle,
+        oldDescription: oldDescription,
+      ),
     );
   }
 }
 
 class NewStashForm extends StatefulWidget {
-  const NewStashForm({Key? key}) : super(key: key);
+  final bool? updateExisting;
+  final String? oldTitle;
+  final String? oldDescription;
+  const NewStashForm(
+      {this.updateExisting, this.oldTitle, this.oldDescription, Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NewStashFormState();
@@ -33,11 +49,16 @@ class NewStashForm extends StatefulWidget {
 
 class _NewStashFormState extends State<NewStashForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext buildContext) {
+    setState(() {
+      titleController.text = widget.oldTitle.toString();
+      descriptionController.text = widget.oldDescription.toString();
+    });
     return Form(
       key: _formKey,
       child: Padding(
@@ -57,18 +78,27 @@ class _NewStashFormState extends State<NewStashForm> {
               child: ElevatedButton(
                 onPressed: () {
                   var db = DatabaseConnector();
-                  db.insertStash(
-                    Stash(
-                        title: titleController.text,
-                        description: descriptionController.text),
-                  );
+                  if (widget.updateExisting!) {
+                    db.changeStashDescription(
+                        widget.oldTitle, descriptionController.text);
+                    db.changeStashTitle(widget.oldTitle, titleController.text);
+                  } else {
+                    db.insertStash(
+                      Stash(
+                          title: titleController.text,
+                          description: descriptionController.text),
+                    );
+                  }
+
                   //Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MainPage()));
                 },
-                child: const Text('Add new stash'),
+                child: widget.updateExisting == true
+                    ? const Text('Update stash')
+                    : const Text('Add new stash'),
               ),
             )
           ],
