@@ -89,6 +89,18 @@ class DatabaseConnector {
     );
   }
 
+  Future<void> changeStashTitle(var oldTitle, var newTitle) async {
+    final db = await database;
+    await db.execute(
+        'update stashes set title = ? where title == ?', [newTitle, oldTitle]);
+  }
+
+  Future<void> changeStashDescription(var title, var newDescription) async {
+    final db = await database;
+    await db.execute('update stashes set description = ? where title == ?',
+        [newDescription, title]);
+  }
+
   Future<void> insertItem(Item item) async {
     //connecting to database
     final db = await database;
