@@ -19,7 +19,12 @@ class LongDescriptionPage extends StatelessWidget {
         ),
         title: Text('$name long description'),
       ),
-      body: Text('$longDescription'),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: longDescription!.isNotEmpty
+            ? Text('$longDescription')
+            : const Text('No long description provided.'),
+      ),
     );
   }
 }
