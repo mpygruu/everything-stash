@@ -5,6 +5,7 @@ import '../models/db_model.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
+  final int? id;
   final String? name;
   final String? shortDescription;
   final String? longDescription;
@@ -13,7 +14,8 @@ class ItemCard extends StatelessWidget {
   final VoidCallback? refreshPage;
 
   const ItemCard(
-      {this.name,
+      {this.id,
+      this.name,
       this.shortDescription,
       this.longDescription,
       this.quantity,
@@ -22,18 +24,14 @@ class ItemCard extends StatelessWidget {
       Key? key})
       : super(key: key);
 
-  void deleteItem(title) {
+  void deleteItem(int? id) {
     var db = DatabaseConnector();
-    db.findItem(name).then((Item item) {
-      db.deleteItem(item).then((value) {
-        refreshPage!.call();
-      });
-    });
+    db.deleteItem(id!).then((value) => refreshPage!.call());
   }
 
-  void changeQuantity(name, q) {
+  void changeQuantity(int? id, int? q) {
     var db = DatabaseConnector();
-    db.changeQuantity(name, q).then((value) => refreshPage!.call());
+    db.changeQuantity(id, q).then((value) => refreshPage!.call());
   }
 
   @override
@@ -47,12 +45,12 @@ class ItemCard extends StatelessWidget {
         trailing: PopupMenuButton(
           onSelected: (result) {
             if (result == 0) {
-              deleteItem(name);
+              deleteItem(id!);
             } else if (result == 1) {
-              changeQuantity(name, 1);
+              changeQuantity(id, 1);
             } else if (result == 2) {
               if (int.parse(quantity!) >= 2) {
-                changeQuantity(name, -1);
+                changeQuantity(id, -1);
               }
             }
           },

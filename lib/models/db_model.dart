@@ -125,12 +125,12 @@ class DatabaseConnector {
     );
   }
 
-  Future<void> deleteItem(Item item) async {
+  Future<void> deleteItem(int id) async {
     final db = await database;
     await db.delete(
       'items', //table name
-      where: 'id == ?', //condition checking for id in stash list
-      whereArgs: [item.id],
+      where: 'id == ?', //condition checking for id in item list
+      whereArgs: [id],
     );
   }
 
@@ -145,10 +145,10 @@ class DatabaseConnector {
     return Item.fromMap(result[0]);
   }
 
-  Future<void> changeQuantity(var name, int? q) async {
+  Future<void> changeQuantity(int? id, int? q) async {
     final db = await database;
     await db.execute(
-        'update items set quantity = quantity + ? where name == ?', [q, name]);
+        'update items set quantity = quantity + ? where id == ?', [q, id]);
   }
 
   Future<List<Item>> getItems(int? stashId) async {

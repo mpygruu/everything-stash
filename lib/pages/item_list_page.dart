@@ -44,6 +44,7 @@ class _ItemListPage extends State<ItemListPage> {
               : ListView.builder(
                   itemCount: datalength,
                   itemBuilder: (context, i) => ItemCard(
+                    id: data[i].id,
                     name: data[i].name,
                     shortDescription: data[i].shortDescription,
                     longDescription: data[i].longDescription,
