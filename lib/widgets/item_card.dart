@@ -3,8 +3,6 @@ import 'package:everything_stash/pages/new_item_form.dart';
 import 'package:flutter/material.dart';
 
 import '../models/db_model.dart';
-import '../models/item.dart';
-import '../models/stash.dart';
 
 class ItemCard extends StatelessWidget {
   final int? id;
@@ -53,7 +51,7 @@ class ItemCard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (buildContext) => NewItemForm(
+                      builder: (buildContext) => NewItemFormPage(
                         stash: stash,
                         updateMode: true,
                         itemId: id,

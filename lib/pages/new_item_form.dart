@@ -57,18 +57,17 @@ class _NewItemFormState extends State<NewItemForm> {
 
   @override
   Widget build(BuildContext buildContext) {
-    /*if (widget.updateMode!) {
+    if (widget.updateMode!) {
       var db = DatabaseConnector();
       db.getItemById(widget.itemId).then(
         (item) {
           nameController.text = item.name!;
           shortDescriptionController.text = item.shortDescription!;
-          longDescriptionController.text = item.name!;
+          longDescriptionController.text = item.longDescription!;
           quantityController.text = item.quantity.toString();
-          nameController.text = item.name!;
         },
       );
-    }*/
+    }
 
     return Form(
       key: _formKey,

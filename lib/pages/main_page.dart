@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (buildContext) => NewStashFormPage()));
+                    builder: (buildContext) => const NewStashFormPage(updateExisting: false,)));
           });
         },
         tooltip: 'Add a new stash',
