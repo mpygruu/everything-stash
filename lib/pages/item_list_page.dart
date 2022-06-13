@@ -1,3 +1,4 @@
+import 'package:everything_stash/pages/main_page.dart';
 import 'package:everything_stash/widgets/item_card.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,8 @@ class _ItemListPage extends State<ItemListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (buildContext) => const MainPage()));
           },
         ),
         title: Text('${widget.stash!.title} items'),
@@ -61,8 +63,10 @@ class _ItemListPage extends State<ItemListPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (buildContext) =>
-                        NewItemFormPage(stash: widget.stash)));
+                    builder: (buildContext) => NewItemFormPage(
+                          stash: widget.stash,
+                          updateMode: false,
+                        )));
           });
         },
         tooltip: 'Add an item',
