@@ -102,6 +102,25 @@ class DatabaseConnector {
     );
   }
 
+  Future<Stash> getStashById(int? id) async {
+    final db = await database;
+
+    List<Map<String, dynamic>> data = await db.query(
+      'stashes',
+      where: 'id == ?',
+      whereArgs: [id],
+    );
+
+    return List.generate(
+      data.length,
+      (index) => Stash(
+        id: data[index]['id'],
+        title: data[index]['title'],
+        description: data[index]['description'],
+      ),
+    )[0];
+  }
+
   Future<void> changeStashTitle(var oldTitle, var newTitle) async {
     final db = await database;
     await db.execute(
@@ -145,6 +164,28 @@ class DatabaseConnector {
     return Item.fromMap(result[0]);
   }
 
+  Future<Item> getItemById(int? id) async {
+    final db = await database;
+
+    List<Map<String, dynamic>> data = await db.query(
+      'items',
+      where: 'id == ?',
+      whereArgs: [id],
+    );
+
+    return List.generate(
+      data.length,
+      (index) => Item(
+        id: data[index]['id'],
+        name: data[index]['name'],
+        shortDescription: data[index]['shortDescription'],
+        longDescription: data[index]['longDescription'],
+        quantity: data[index]['quantity'],
+        stashId: data[index]['stashId'],
+      ),
+    )[0];
+  }
+
   Future<void> changeQuantity(int? id, int? q) async {
     final db = await database;
     await db.execute(
@@ -172,6 +213,40 @@ class DatabaseConnector {
           longDescription: items[index]['longDescription'],
           quantity: items[index]['quantity'],
           stashId: items[index]['stashId']),
+    );
+  }
+
+  Future<void> changeItemName(int? id, var newName) async {
+    final db = await database;
+    await db.execute(
+      'update items set name = ? where id == ?',
+      [newName, id],
+    );
+  }
+
+  Future<void> changeItemShortDescription(
+      int? id, var newShortDescription) async {
+    final db = await database;
+    await db.execute(
+      'update items set shortDescription = ? where id == ?',
+      [newShortDescription, id],
+    );
+  }
+
+  Future<void> changeItemLongDescription(
+      int? id, var newLongDescription) async {
+    final db = await database;
+    await db.execute(
+      'update items set longDescription = ? where id == ?',
+      [newLongDescription, id],
+    );
+  }
+
+  Future<void> changeItemQuantity(int? id, int? quantity) async {
+    final db = await database;
+    await db.execute(
+      'update items set quantity = ? where id == ?',
+      [quantity, id],
     );
   }
 }
