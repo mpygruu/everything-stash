@@ -1,8 +1,10 @@
 import 'package:everything_stash/pages/long_description_page.dart';
+import 'package:everything_stash/pages/new_item_form.dart';
 import 'package:flutter/material.dart';
 
 import '../models/db_model.dart';
 import '../models/item.dart';
+import '../models/stash.dart';
 
 class ItemCard extends StatelessWidget {
   final int? id;
@@ -45,19 +47,35 @@ class ItemCard extends StatelessWidget {
         trailing: PopupMenuButton(
           onSelected: (result) {
             if (result == 0) {
-              deleteItem(id!);
+              var db = DatabaseConnector();
+              db.getStashById(int.parse(stashId!)).then(
+                (stash) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (buildContext) => NewItemForm(
+                        stash: stash,
+                        updateMode: true,
+                        itemId: id,
+                      ),
+                    ),
+                  );
+                },
+              );
             } else if (result == 1) {
               changeQuantity(id, 1);
             } else if (result == 2) {
               if (int.parse(quantity!) >= 2) {
                 changeQuantity(id, -1);
               }
+            } else if (result == 3) {
+              deleteItem(id!);
             }
           },
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(
-              child: Text("Delete"),
+              child: Text("Update data"),
               value: 0,
             ),
             const PopupMenuItem(
@@ -67,6 +85,10 @@ class ItemCard extends StatelessWidget {
             const PopupMenuItem(
               child: Text("Remove 1"),
               value: 2,
+            ),
+            const PopupMenuItem(
+              child: Text("Delete"),
+              value: 3,
             ),
           ],
         ),

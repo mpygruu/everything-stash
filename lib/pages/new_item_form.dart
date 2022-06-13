@@ -7,7 +7,11 @@ import '../models/stash.dart';
 
 class NewItemFormPage extends StatelessWidget {
   final Stash? stash;
-  const NewItemFormPage({required this.stash, Key? key}) : super(key: key);
+  bool? updateMode = false;
+  int? itemId;
+  NewItemFormPage(
+      {required this.stash, required this.updateMode, this.itemId, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +23,26 @@ class NewItemFormPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text('New item in ${stash!.title}'),
+        title: updateMode == false
+            ? Text('New item in ${stash!.title}')
+            : const Text('Change item data'),
       ),
-      body: NewItemForm(stash: stash),
+      body: NewItemForm(
+        stash: stash,
+        updateMode: updateMode,
+        itemId: itemId,
+      ),
     );
   }
 }
 
 class NewItemForm extends StatefulWidget {
   final Stash? stash;
-  const NewItemForm({required this.stash, Key? key}) : super(key: key);
+  bool? updateMode = false;
+  int? itemId;
+  NewItemForm(
+      {required this.stash, required this.updateMode, this.itemId, Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NewItemFormState();
@@ -43,6 +57,19 @@ class _NewItemFormState extends State<NewItemForm> {
 
   @override
   Widget build(BuildContext buildContext) {
+    /*if (widget.updateMode!) {
+      var db = DatabaseConnector();
+      db.getItemById(widget.itemId).then(
+        (item) {
+          nameController.text = item.name!;
+          shortDescriptionController.text = item.shortDescription!;
+          longDescriptionController.text = item.name!;
+          quantityController.text = item.quantity.toString();
+          nameController.text = item.name!;
+        },
+      );
+    }*/
+
     return Form(
       key: _formKey,
       child: Padding(
