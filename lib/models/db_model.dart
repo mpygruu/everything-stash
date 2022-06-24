@@ -49,12 +49,12 @@ class DatabaseConnector {
     );
   }
 
-  Future<void> deleteStash(Stash stash) async {
+  Future<void> deleteStash(int? id) async {
     final db = await database;
     await db.delete(
       'stashes', //table name
       where: 'id == ?', //condition checking for id in stash list
-      whereArgs: [stash.id],
+      whereArgs: [id],
     );
   }
 
@@ -121,16 +121,16 @@ class DatabaseConnector {
     )[0];
   }
 
-  Future<void> changeStashTitle(var oldTitle, var newTitle) async {
+  Future<void> changeStashTitle(int? id, var newTitle) async {
     final db = await database;
-    await db.execute(
-        'update stashes set title = ? where title == ?', [newTitle, oldTitle]);
+    await db
+        .execute('update stashes set title = ? where id == ?', [newTitle, id]);
   }
 
-  Future<void> changeStashDescription(var title, var newDescription) async {
+  Future<void> changeStashDescription(int? id, var newDescription) async {
     final db = await database;
-    await db.execute('update stashes set description = ? where title == ?',
-        [newDescription, title]);
+    await db.execute('update stashes set description = ? where id == ?',
+        [newDescription, id]);
   }
 
   Future<void> insertItem(Item item) async {
