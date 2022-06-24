@@ -13,16 +13,16 @@ class ItemCard extends StatelessWidget {
   final String? stashId;
   final VoidCallback? refreshPage;
 
-  const ItemCard(
-      {this.id,
-      this.name,
-      this.shortDescription,
-      this.longDescription,
-      this.quantity,
-      this.stashId,
-      this.refreshPage,
-      Key? key})
-      : super(key: key);
+  const ItemCard({
+    this.id,
+    this.name,
+    this.shortDescription,
+    this.longDescription,
+    this.quantity,
+    this.stashId,
+    this.refreshPage,
+    Key? key,
+  }) : super(key: key);
 
   void deleteItem(int? id) {
     var db = DatabaseConnector();
