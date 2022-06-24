@@ -40,6 +40,7 @@ class _MainPageState extends State<MainPage> {
                 : ListView.builder(
                     itemCount: datalength,
                     itemBuilder: (context, i) => StashCard(
+                      id: data[i].id,
                       title: data[i].title,
                       description: data[i].description,
                       refreshPage: refreshPage,
@@ -54,7 +55,9 @@ class _MainPageState extends State<MainPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (buildContext) => const NewStashFormPage(updateExisting: false,)));
+                    builder: (buildContext) => const NewStashFormPage(
+                          updateExisting: false,
+                        )));
           });
         },
         tooltip: 'Add a new stash',

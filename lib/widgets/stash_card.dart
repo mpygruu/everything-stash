@@ -5,38 +5,19 @@ import 'package:flutter/material.dart';
 import '../models/stash.dart';
 import '../pages/new_stash_form.dart';
 
-
 class StashCard extends StatelessWidget {
+  final int? id;
   final String? title;
   final String? description;
   final VoidCallback? refreshPage;
 
-  const StashCard({this.title, this.description, this.refreshPage, Key? key})
-      : super(key: key);
-
-  void deleteStash(title) {
-    var db = DatabaseConnector();
-    db.findStash(title).then((Stash stash) {
-      db.deleteStash(stash).then((value) {
-        refreshPage!.call();
-      });
-    });
-  }
-
-  void updateDescription(title, newDescription) {
-    var db = DatabaseConnector();
-
-    db.changeStashDescription(title, newDescription).then(
-          (value) => refreshPage!.call(),
-        );
-  }
-
-  void changeTitle(oldTitle, newTitle) {
-    var db = DatabaseConnector();
-    db.changeStashTitle(oldTitle, newTitle).then(
-          (value) => refreshPage!.call(),
-        );
-  }
+  const StashCard({
+    this.id,
+    this.title,
+    this.description,
+    this.refreshPage,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +34,16 @@ class StashCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (buildContext) => NewStashFormPage(
                     updateExisting: true,
-                    oldTitle: title,
-                    oldDescription: description,
+                    stashId: id,
                   ),
                 ),
               );
             }
             if (result == 1) {
-              deleteStash(title);
+              var db = DatabaseConnector();
+              db.deleteStash(id).then(
+                    (value) => refreshPage!.call(),
+                  );
             }
           },
           icon: const Icon(Icons.more_vert),
