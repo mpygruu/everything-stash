@@ -96,15 +96,25 @@ class _NewItemFormState extends State<NewItemForm> {
               child: ElevatedButton(
                 onPressed: () {
                   var db = DatabaseConnector();
-                  db.insertItem(
-                    Item(
-                      name: nameController.text,
-                      shortDescription: shortDescriptionController.text,
-                      longDescription: longDescriptionController.text,
-                      quantity: int.parse(quantityController.text),
-                      stashId: widget.stash!.id,
-                    ),
-                  );
+                  if (widget.updateMode!) {
+                    db.changeItemName(widget.itemId, nameController.text);
+                    db.changeItemShortDescription(
+                        widget.itemId, shortDescriptionController.text);
+                    db.changeItemLongDescription(
+                        widget.itemId, longDescriptionController.text);
+                    db.changeItemQuantity(
+                        widget.itemId, int.parse(quantityController.text));
+                  } else {
+                    db.insertItem(
+                      Item(
+                        name: nameController.text,
+                        shortDescription: shortDescriptionController.text,
+                        longDescription: longDescriptionController.text,
+                        quantity: int.parse(quantityController.text),
+                        stashId: widget.stash!.id,
+                      ),
+                    );
+                  }
                   //Navigator.pop(context);
                   Navigator.pushReplacement(
                     context,
@@ -115,7 +125,9 @@ class _NewItemFormState extends State<NewItemForm> {
                     ),
                   );
                 },
-                child: const Text('Add new item'),
+                child: widget.updateMode!
+                    ? const Text('Update data')
+                    : const Text('Add new item'),
               ),
             )
           ],
