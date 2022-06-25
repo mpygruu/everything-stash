@@ -94,36 +94,38 @@ class _NewStashFormState extends State<NewStashForm> {
                     db.stashExists(titleController.text).then(
                       (stashExists) {
                         if (stashExists) {
-                          AlertDialog alertDialog = AlertDialog(
-                            title: const Text('Invalid stash'),
-                            content: const Text(
-                                "Stash with this title already exists."),
-                            actions: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("Ok"))
-                            ],
-                          );
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return alertDialog;
+                                return AlertDialog(
+                                  title: const Text('Invalid stash'),
+                                  content: const Text(
+                                      "Stash with this title already exists."),
+                                  actions: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                        },
+                                        child: const Text("Ok"))
+                                  ],
+                                );
                               });
                         } else {
-                          db.insertStash(
-                            Stash(
-                              title: titleController.text,
-                              description: descriptionController.text,
-                            ),
-                          );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainPage(),
-                            ),
-                          );
+                          db
+                              .insertStash(
+                                Stash(
+                                  title: titleController.text,
+                                  description: descriptionController.text,
+                                ),
+                              )
+                              .then((value) => Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MainPage(),
+                                    ),
+                                  ));
                         }
                       },
                     );
