@@ -90,11 +90,17 @@ class _NewItemFormState extends State<NewItemForm> {
             TextFormField(
               decoration: const InputDecoration(hintText: 'Quantity'),
               controller: quantityController,
+              validator: (String? value) {
+                return (value == null || value.isEmpty)
+                    ? 'You need to provide quantity'
+                    : null;
+              },
             ),
             Padding(
               padding: const EdgeInsets.all(25.0),
               child: ElevatedButton(
                 onPressed: () {
+                  _formKey.currentState!.validate();
                   var db = DatabaseConnector();
                   if (widget.updateMode!) {
                     db.changeItemName(widget.itemId, nameController.text);
