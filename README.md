@@ -23,8 +23,8 @@ The main page holds all added stashes. If there are no stashes added yet, the us
 
 ## Screenshots
 
-![Main Page](img\main_page.png)
-![Stash actions](img\stash_actions.png)
-![Items Page](img\items_page.png)
-![New item form](img\new_item_form.png)
-![Update item form](img\update_item_form.png)
+* ![Main Page](img/main_page.png)
+* ![Stash actions](img/stash_actions.png)
+* ![Items Page](img/items_page.png)
+* ![New item form](img/new_item_form.png)
+* ![Update item form](img/update_item_form.png)
