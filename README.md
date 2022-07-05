@@ -13,7 +13,7 @@ During developing this app I learned asynchronous programming and basic SQLite d
 ## How to use
 
 The main page holds all added stashes. If there are no stashes added yet, the user sees a message 
-"You have no stashes.
+"You have no stashes".
 
 * To add a new stash, tap the floating action button in bottom right corner. A new stash form appears where you need to provide a stash title and its description.
 * After adding a stash, you can now see it on the main page. After tapping on it, a list of items appears.
